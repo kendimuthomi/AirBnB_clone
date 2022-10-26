@@ -20,7 +20,7 @@ class BaseModelTestCase(unittest.TestCase):
         self.assertIsInstance(my_model, BaseModel)
         self.assertIsInstance(my_model.created_at, datetime.datetime)
         self.assertIsInstance(my_model.updated_at, datetime.datetime)
-        self.assertIsInstance(my_model.id, uuid.UUID)
+        self.assertIsInstance(my_model.id, str)
 
 
     def testSave(self):

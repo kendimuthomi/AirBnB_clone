@@ -19,7 +19,9 @@ class FileStorage:
         """Serializes __objects to the JSON file (path: __file_path)"""
         with open(self.__file_path, "a") as file:
             for my_object in self.__objects.values():
-                json.dump(my_object.to_dict(), file)
+                obj_class_name = my_object.__class__.__name__
+                my_dict = {f"{obj_class_name}.{my_object.id}": my_object.to_dict()}
+                json.dump(my_dict, file)
 
     def reload(self):
         """
