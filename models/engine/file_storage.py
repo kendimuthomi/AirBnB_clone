@@ -2,6 +2,13 @@
 import json
 from models.base_model import BaseModel
 
+from models.user import User
+from models.city import City
+from models.state import State
+from models.review import Review
+from models.place import Place
+from models.amenity import Amenity
+
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
@@ -31,7 +38,7 @@ class FileStorage:
 
         """
         try:
-            with open(self.__file_path, encoding="utf-8") as file:
+            with open(self.__file_path, 'r',  encoding="utf-8") as file:
                 objects_dict = json.load(file)
             for key, value in objects_dict.items():
                 model = BaseModel(**value)
