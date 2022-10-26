@@ -20,7 +20,7 @@ class BaseModel:
                     if key != "__class__":
                         self.__dict__[key] = value
         else:
-            self.id = uuid.uuid4()
+            self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
             storage.new(self)
 
