@@ -5,11 +5,11 @@ from datetime import datetime
 
 class BaseModel:
     """Represents the BaseModel for the hbnb project"""
-
     def __init__(self, *args, **kwargs):
         """
         initializes a new BaseModel
         using **kwargs(key word arguments)
+
         """
         from models import storage
         if len(kwargs) != 0:

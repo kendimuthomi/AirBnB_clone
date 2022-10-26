@@ -1,1 +1,1 @@
-{"BaseModel.9eecac31-64ce-4e29-9815-aa521483bce7": {"id": "9eecac31-64ce-4e29-9815-aa521483bce7", "created_at": "2022-10-26T09:35:15.886081", "updated_at": "2022-10-26T09:35:15.886081", "__class__": "BaseModel"}}
+{"id": "ab938c1f-6886-49e2-8b1b-edcee24d62b4", "created_at": "2022-10-26T10:11:24.316469", "updated_at": "2022-10-26T10:11:24.316488", "name": "My_First_Model", "my_number": 89, "__class__": "BaseModel"}
