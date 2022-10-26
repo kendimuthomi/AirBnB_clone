@@ -2,7 +2,6 @@
 """Defines the BaseModel class"""
 import uuid
 from datetime import datetime
-
 class BaseModel:
     """Represents the BaseModel for the hbnb project"""
     def __init__(self, *args, **kwargs):
@@ -11,7 +10,6 @@ class BaseModel:
         using **kwargs(key word arguments)
 
         """
-        from models import storage
         if len(kwargs) != 0:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
@@ -20,6 +18,7 @@ class BaseModel:
                     if key != "__class__":
                         self.__dict__[key] = value
         else:
+            from models import storage
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
             storage.new(self)
