@@ -3,7 +3,6 @@
 import uuid
 from datetime import datetime
 
-
 class BaseModel:
     """Represents the BaseModel for the hbnb project"""
 
@@ -12,9 +11,7 @@ class BaseModel:
         initializes a new BaseModel
         using **kwargs(key word arguments)
         """
-        self.id = uuid.uuid4()
-        self.created_at = datetime.now()
-        self.updated_at = self.created_at
+        from models import storage
         if len(kwargs) != 0:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
@@ -22,6 +19,12 @@ class BaseModel:
                 else:
                     if key != "__class__":
                         self.__dict__[key] = value
+        else:
+            self.id = uuid.uuid4()
+            self.created_at = self.updated_at = datetime.now()
+            storage.new(self)
+
+
 
     def __str__(self):
         """returns the representation of the BaseModel instance"""
@@ -30,7 +33,9 @@ class BaseModel:
 
     def save(self):
         """Updates updated_at with the current time"""
+        from models import storage
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """returns a dictionary containing all key/value of __dict__"""
