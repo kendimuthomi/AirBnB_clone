@@ -13,6 +13,10 @@ class BaseModelTestCase(unittest.TestCase):
         """"Testing if initialising works as intended"""
 
         my_model = BaseModel()
+        new_model = BaseModel()
+        self.assertNotEqual(my_model.id, new_model.id)
+        self.assertNotEqual(my_model.created_at, new_model.created_at)
+        self.assertNotEqual(my_model.updated_at, new_model.updated_at)
         self.assertIsInstance(my_model, BaseModel)
         self.assertIsInstance(my_model.created_at, datetime.datetime)
         self.assertIsInstance(my_model.updated_at, datetime.datetime)
@@ -46,3 +50,15 @@ class BaseModelTestCase(unittest.TestCase):
         self.assertIsInstance(my_model_json['created_at'], str)
         self.assertIsInstance(my_model_json['updated_at'], str)
 
+
+    def testKwargs(self):
+        """Tests if basemodel can be initialised for a parsed dict"""
+
+        my_model = BaseModel()
+        my_model.name = "My_First_Model"
+        my_model.my_number = 89
+        my_model_json = my_model.to_dict()
+        new_model = BaseModel(**my_model_json)
+        self.assertEqual(my_model.id, new_model.id)
+        self.assertEqual(my_model.created_at, new_model.created_at)
+        self.assertEqual(my_model.updated_at, new_model.updated_at)
