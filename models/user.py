@@ -5,6 +5,7 @@ Defines the class User
 that iherits from BaseModel
 """
 
+
 class User(BaseModel):
     """
     Representation of a user.
