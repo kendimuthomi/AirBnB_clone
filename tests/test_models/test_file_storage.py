@@ -62,4 +62,3 @@ class FileStorageTestCase(unittest.TestCase):
         self.assertIn(model.id, objects_values)
         self.assertIn(model_1.id, objects_values)
         self.assertIn(model_2.id, objects_values)
-
