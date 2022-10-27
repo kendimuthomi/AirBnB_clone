@@ -66,7 +66,6 @@ class HBNBCommand(cmd.Cmd):
             return
 
         if cls in HBNBCommand.allowed_cls:
-            HBNBCommand.new_storage.reload()
             all_objects = HBNBCommand.new_storage.all()
             parsed_list = [cls, identity]
             parsed_name = ".".join(parsed_list)
@@ -94,22 +93,16 @@ class HBNBCommand(cmd.Cmd):
         elif (len(parsed_line) == 1):
             print("** instance id missing **")
         else:
-            print("Too many arguements, help show, to see usage")
+            print("Too many arguements, help destroy, to see usage")
             return
-
+        all_objects = HBNBCommand.new_storage.all()
         if cls in HBNBCommand.allowed_cls:
-            parsed_list = [cls, identity]
-            parsed_name = ".".join(parsed_list)
-            with open("file.json", "r", encoding='utf-8') as file:
-                obj_dict = json.load(file)
-
-            with open("file.json", "w", encoding='utf-8') as file:
-                if parsed_name in obj_dict.keys():
-                    del obj_dict[parsed_name]
-                    json.dump(obj_dict, file)
-
-                else:
-                    print("** no instance found **")
+            for key, value in all_objects.items():
+                if identity == value.id:
+                    del all_objects[key]
+                    HBNBCommand.new_storage.save()
+                    return
+            print("** no instance found **")
 
         else:
             print("** class doesn't exist **") 
@@ -142,6 +135,58 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
 
+    def do_update(self, line):
+        """
+         Updates an instance based on the class name and id
+         by adding or updating attribute (save the change into the JSON file).
+         Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com".
+         """
+        if (len(line) > 0):
+            parsed_line = line.split(" ")
+        else:
+            print("** class name missing **")
+            return
+        all_obs = HBNBCommand.new_storage.all()
+        cls = parsed_line[0]
+        if cls not in HBNBCommand.allowed_cls:
+            print("** class doesn't exist **")
+            return
+        if (len(parsed_line) < 2):
+            print("** instance id missing **")
+            return
+        obj_dict = {}
+        identity = parsed_line[1]
+        for key, obj in all_obs.items():
+            obj_dict[key] = obj.to_dict()
+        
+        parsed_name = [cls, identity]
+        name = ".".join(parsed_name)
+        if name not in obj_dict.keys():
+            print("** no instance found **")
+            return
+        if (len(parsed_line) < 3):
+            print("** attribute name missing **")
+            return
+        attribute = parsed_line[2]
+        attributes = []
+        if attribute in ["id", "updated_at", "created_at"]:
+            print("Cannot update those attributes")
+            return
+        for value in obj_dict.values():
+            for key in value.keys():
+                if key not in ["id", "updated_at", "created_at"]:
+                    attributes.append(key)
+        if attribute not in attributes:
+            print("** Attribute missing **")
+            return
+        else:
+            if (len(parsed_line) < 4):
+                print("** value missing **")
+                return
+            else:
+                att_val = parsed_line[3]
+                setattr(all_obs[name], attribute, eval(att_val))
+                HBNBCommand.new_storage.save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
