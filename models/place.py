@@ -2,6 +2,7 @@
 from models.base_model import BaseModel
 """Defines a class place"""
 
+
 class Place(BaseModel):
     """
     Representation of the
@@ -20,7 +21,7 @@ class Place(BaseModel):
     longitude: the longitude
     amenity_ids: list of Amenity.ids
     """
-    
+
     name = ""
     city_id = ""
     user_id = ""
