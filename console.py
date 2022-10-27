@@ -2,6 +2,7 @@
 """contains the entry point of the command interpreter:"""
 import cmd
 import json
+from models import storage
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models.user import User
@@ -51,31 +52,22 @@ class HBNBCommand(cmd.Cmd):
         Prints the string representation of an instance based
         on the class name and id. Ex: $ show BaseModel 1234-1234-1234
         """
-        parsed_line = line.split(" ")
-        if (len(parsed_line) >= 1):
-            cls = parsed_line[0]
+        if not line:
+             print("** class name missing **")
         else:
-            print("** class name missing **")
-
-        if (len(parsed_line) == 2):
-            identity = parsed_line[1]
-        elif (len(parsed_line) == 1):
-            print("** instance id missing **")
-        else:
-            print("Too many arguements, help show, to see usage")
-            return
-
-        if cls in HBNBCommand.allowed_cls:
-            HBNBCommand.new_storage.reload()
-            all_objects = HBNBCommand.new_storage.all()
-            parsed_list = [cls, identity]
-            parsed_name = ".".join(parsed_list)
-            if parsed_name in all_objects.keys():
-                print(all_objects[parsed_name])
+            parse_line = line.split()
+            if len(parse_line) != 2:
+                print("** instance id missing **")
+            elif parse_line[0] not in HBNBCommand.allowed_cls:
+                print("** class doesn't exist **")
             else:
+                for key, value in storage.all().items():
+                    if parse_line[1] == value.id:
+                        print(value)
+                        return
                 print("** no instance found **")
-        else:
-            print("** class doesn't exist **") 
+
+
     
     def do_destroy(self, line):
         """
@@ -84,35 +76,20 @@ class HBNBCommand(cmd.Cmd):
         Ex: $ destroy BaseModel 1234-1234-1234
         """
         parsed_line = line.split(" ")
-        if (len(parsed_line) >= 1):
-            cls = parsed_line[0]
-        else:
+        if not parsed_line:
             print("** class name missing **")
-
-        if (len(parsed_line) == 2):
-            identity = parsed_line[1]
-        elif (len(parsed_line) == 1):
-            print("** instance id missing **")
-        else:
-            print("Too many arguements, help show, to see usage")
             return
-
-        if cls in HBNBCommand.allowed_cls:
-            parsed_list = [cls, identity]
-            parsed_name = ".".join(parsed_list)
-            with open("file.json", "r", encoding='utf-8') as file:
-                obj_dict = json.load(file)
-
-            with open("file.json", "w", encoding='utf-8') as file:
-                if parsed_name in obj_dict.keys():
-                    del obj_dict[parsed_name]
-                    json.dump(obj_dict, file)
-
-                else:
-                    print("** no instance found **")
-
-        else:
-            print("** class doesn't exist **") 
+        elif len(parsed_line) != 2:
+            print("** instance id missing **")
+            return
+        elif parsed_line[0] not in HBNBCommand.allowed_cls:
+            print("** class doesn't exist **")
+            return
+        for key, value in storage.all().items():
+            if parsed_line[1] == value.id:
+                del storage.all()[key]
+                return
+        print("** no instance found **")
 
     def do_all(self, line):
         """
