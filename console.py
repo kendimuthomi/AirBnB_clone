@@ -120,10 +120,26 @@ class HBNBCommand(cmd.Cmd):
         based or not on the class name.
         Ex: $ all BaseModel or $ all
         """
-         parsed_line = line.split(" ")
-         if (len(parsed_line) >= 1):
-             cls = parsed_line[0]
- 
+        if (line and (len(line) > 0)):
+            parsed_line = line.split(" ")
+        else:
+            objects = HBNBCommand.new_storage.all()
+            for obj in objects.values():
+                print(obj)
+            return
+
+        if (len(parsed_line) > 1):
+            print("Invalid usage, prompt 'help all', for instructions")
+            return
+
+        cls = parsed_line[0]
+        if cls in HBNBCommand.allowed_cls:
+            objects = HBNBCommand.new_storage.all()
+            for value in objects.values():
+                if (value.to_dict()["__class__"]) == cls:
+                    print(value)
+        else:
+            print("** class doesn't exist **")
 
 
 
