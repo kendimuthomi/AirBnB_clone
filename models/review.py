@@ -2,6 +2,7 @@
 from models.base_model import BaseModel
 """Defines a class review"""
 
+
 class Review(BaseModel):
     """
     Representation of the
@@ -12,7 +13,7 @@ class Review(BaseModel):
     place_id: Place.id
     user_id: User.id
     """
-    
+
     text = ""
     place_id = ""
     user_id = ""
