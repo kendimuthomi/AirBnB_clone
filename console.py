@@ -2,6 +2,7 @@
 """contains the entry point of the command interpreter:"""
 import cmd
 import json
+import re
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models.user import User
@@ -18,6 +19,8 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     allowed_cls = ["BaseModel", "FileStorage", "User",
                    "Place", "City", "State", "Amenity", "Review"]
+    __methods = ["create", "all", "update", "destroy", "show", "count"]
+
 
     def do_quit(self, line):
         """Exits the programme"""
@@ -64,7 +67,7 @@ class HBNBCommand(cmd.Cmd):
         elif (len(parsed_line) == 1):
             print("** instance id missing **")
         else:
-            print("Too many arguements, help show, to see usage")
+            print(f"*** Unknown syntax: {line}")
             return
 
         if cls in HBNBCommand.allowed_cls:
@@ -95,7 +98,7 @@ class HBNBCommand(cmd.Cmd):
         elif (len(parsed_line) == 1):
             print("** instance id missing **")
         else:
-            print("Too many arguements, help destroy, to see usage")
+            print(f"*** Unknown syntax: {line}")
             return
         all_objects = HBNBCommand.new_storage.all()
         if cls in HBNBCommand.allowed_cls:
@@ -123,7 +126,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         if (len(parsed_line) > 1):
-            print("Invalid usage, prompt 'help all', for instructions")
+            print(f"*** Unknown syntax: {line}")
             return
 
         cls = parsed_line[0]
@@ -187,7 +190,71 @@ class HBNBCommand(cmd.Cmd):
                 att_val = parsed_line[3]
                 setattr(all_obs[name], attribute, eval(att_val))
                 HBNBCommand.new_storage.save()
+    def count(self, cls_name):
+        """
+        retrieve the number of instances of a class:
+        <class name>.count()
+        """
+        obs = HBNBCommand.new_storage.all()
+        count = 0
+        for ob in obs.values():
+            if (cls_name == ob.to_dict()["__class__"]):
+                count += 1
 
+        print(count)
+
+    def default(self, line):
+        """
+        Defines what happens if the argument passed is not recognized
+        """
+        line_list = line.split(".")
+        if (len(line_list) <= 1):
+            print(f"*** Unknown syntax: {line}")
+            return
+
+        model = line_list[0]
+        if model not in HBNBCommand.allowed_cls:
+            print("** class doesn't exist **")
+            return
+
+        command = line_list[1]
+        patikana = re.search(r'\(', command)
+        action = command[:patikana.span()[0]]
+
+        if action not in HBNBCommand.__methods:
+            print(f"*** Unknown syntax: {line}")
+
+        arguments = command[patikana.span()[1]:-1]
+        if action == "all":
+            if len(arguments) > 0:
+                print(f"*** Unknown syntax: {line}")
+                return
+            self.do_all(model)
+        if action == "count":
+            if len(arguments) > 0:
+                print(f"*** Unknown syntax: {line}")
+                return
+            self.count(model)
+
+        if action == "show":
+            mini_arg = arguments.split(", ")
+            if (len(mini_arg) > 1) and (len(arguments) > 0):
+                print(f"*** Unknown syntax: {line}")
+                return
+            elif (len(arguments) == 0):
+                print("** instance id missing **")
+                return
+            self.do_show(model + " " + arguments)
+
+        if action == "destroy":
+            mini_arg = arguments.split(", ")
+            if (len(mini_arg) > 1) and (len(arguments) > 0):
+                print(f"*** Unknown syntax: {line}")
+                return
+            elif (len(arguments) == 0):
+                print("** instance id missing **")
+                return
+            self.do_destroy(model + " " + arguments)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
