@@ -255,6 +255,31 @@ class HBNBCommand(cmd.Cmd):
                 print("** instance id missing **")
                 return
             self.do_destroy(model + " " + arguments)
+        if action == "update":
+            patikana2 = re.search(r'\{', arguments)
+            if patikana2 is not None:
+                identity = arguments[1:patikana2.span()[0] - 3]
+                dict_json = arguments[patikana2.span()[1] - 1:]
+                att_dict = eval(dict_json)
+                for attr, value in att_dict.items():
+                    self.do_update(model + " " + identity + " "
+                            + attr + " " + '"' + value + '"')
+                return
+            else:
+                mini_arg = arguments.split(", ")
+                if (len(mini_arg) == 0):
+                    print("** instance id missing **")
+                    return
+                if len(mini_arg) != 3:
+                    print(f"*** Unknown syntax: {line}")
+                    return
+                identity = mini_arg[0]
+                attr = mini_arg[1]
+                value = mini_arg[2]
+                parse_line = model + " " + identity[1:-1] + " " + attr[1:-1] +\
+                        " " + value
+                print(parse_line)
+                self.do_update(parse_line)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
