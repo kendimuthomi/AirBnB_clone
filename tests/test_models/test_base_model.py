@@ -22,7 +22,6 @@ class BaseModelTestCase(unittest.TestCase):
         self.assertIsInstance(my_model.updated_at, datetime.datetime)
         self.assertIsInstance(my_model.id, str)
 
-
     def testSave(self):
         """Tests the save instance method"""
 
@@ -42,14 +41,13 @@ class BaseModelTestCase(unittest.TestCase):
                 self.assertIn(key, my_model.__dict__.keys())
 
         for key, value in my_model_json.items():
-            if (key != 'created_at' and key != 'updated_at'\
+            if (key != 'created_at' and key != 'updated_at'
                     and key != '__class__'):
                 self.assertIn(value, my_model.__dict__.values())
 
         self.assertIn('__class__', my_model_json.keys())
         self.assertIsInstance(my_model_json['created_at'], str)
         self.assertIsInstance(my_model_json['updated_at'], str)
-
 
     def testKwargs(self):
         """Tests if basemodel can be initialised for a parsed dict"""
