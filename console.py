@@ -5,19 +5,20 @@ import json
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models.user import User
-from models.amenity  import Amenity
+from models.amenity import Amenity
 from models.city import City
 from models.state import State
 from models.review import Review
 from models.place import Place
 
+
 class HBNBCommand(cmd.Cmd):
     new_storage = FileStorage()
     new_storage.reload()
     prompt = "(hbnb) "
-    allowed_cls = ["BaseModel", "FileStorage", "User",\
-                "Place", "City", "State", "Amenity", "Review"] 
-        
+    allowed_cls = ["BaseModel", "FileStorage", "User",
+                   "Place", "City", "State", "Amenity", "Review"]
+
     def do_quit(self, line):
         """Exits the programme"""
         return True
@@ -26,6 +27,7 @@ class HBNBCommand(cmd.Cmd):
         """Signal to exit the programme"""
         print()
         return True
+
     def emptyline(self):
         pass
 
@@ -73,9 +75,9 @@ class HBNBCommand(cmd.Cmd):
                 print(all_objects[parsed_name])
             else:
                 print("** no instance found **")
-        else:
-            print("** class doesn't exist **") 
-    
+            else:
+                print("** class doesn't exist **")
+
     def do_destroy(self, line):
         """
         Deletes an instance based on the class name and id
@@ -103,9 +105,8 @@ class HBNBCommand(cmd.Cmd):
                     HBNBCommand.new_storage.save()
                     return
             print("** no instance found **")
-
         else:
-            print("** class doesn't exist **") 
+            print("** class doesn't exist **")
 
     def do_all(self, line):
         """
@@ -134,7 +135,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
-
     def do_update(self, line):
         """
          Updates an instance based on the class name and id
@@ -158,7 +158,7 @@ class HBNBCommand(cmd.Cmd):
         identity = parsed_line[1]
         for key, obj in all_obs.items():
             obj_dict[key] = obj.to_dict()
-        
+
         parsed_name = [cls, identity]
         name = ".".join(parsed_name)
         if name not in obj_dict.keys():
