@@ -75,8 +75,8 @@ class HBNBCommand(cmd.Cmd):
                 print(all_objects[parsed_name])
             else:
                 print("** no instance found **")
-            else:
-                print("** class doesn't exist **")
+        else:
+            print("** class doesn't exist **")
 
     def do_destroy(self, line):
         """
