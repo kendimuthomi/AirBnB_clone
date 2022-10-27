@@ -9,6 +9,7 @@ from models.review import Review
 from models.place import Place
 from models.amenity import Amenity
 
+
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
@@ -46,4 +47,3 @@ class FileStorage:
                 self.new(eval(class_name)(**value))
         except FileNotFoundError:
             pass
-
