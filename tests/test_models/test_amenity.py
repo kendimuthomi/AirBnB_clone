@@ -9,7 +9,7 @@ class AmenityTestCase(unittest.TestCase):
 
     def test_class_attributes(self):
         a = Amenity()
-        self.assertIs(type(name), str)
+        self.assertIs(type(a.name), str)
 
     def test_attr_are_cls_atrr(self):
         """tests that these are class attributes"""
