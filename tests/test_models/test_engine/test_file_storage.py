@@ -10,7 +10,7 @@ import json
 class FileStorageTestCase(unittest.TestCase):
     """Defiinition of the class for the unittests"""
 
-    def testAll(self):
+    def test_All(self):
         """
         Testing the method all() from FileStorage
         Initially when there is no file.json
@@ -30,7 +30,7 @@ class FileStorageTestCase(unittest.TestCase):
         self.assertIn(new_model_2, objs)
         self.assertIn(new_model_3, objs)
 
-    def testNew(self):
+    def test_New(self):
         """Testing the method new()"""
         new_model = BaseModel()
         all_objs = storage.all()
@@ -44,7 +44,7 @@ class FileStorageTestCase(unittest.TestCase):
         self.assertIn(new_model.created_at.isoformat(), obj_values)
         self.assertIn(new_model.updated_at.isoformat(), obj_values)
 
-    def testSave(self):
+    def test_Save(self):
         """Testing the methon save()"""
         model = BaseModel()
         model_1 = BaseModel()
