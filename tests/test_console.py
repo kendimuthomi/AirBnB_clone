@@ -75,5 +75,41 @@ class HBNBCommandTestCases(unittest.TestCase):
             HBNBCommand().onecmd("help update")
             self.assertEqual(help_update, f.getvalue()[:-1])
 
+    def test_create(self):
+        """Testing if do_create creates a model and then displays its id"""
+        class_missing = "** class name missing **"
+        id_error = "** instance id missing **"
+        unknown_syntax = "*** Unknown syntax: {line}"
+        instance_error = "** no instance found **"
+        class_error = "** class doesn't exist **"
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            identity = f.getvalue()[:-1]
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            all_obs = storage.all()
+            print(all_obs[f"User.{identity}"])
+            ob_string = f.getvalue()[:-1]
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd(f'User.show("{identity}")')
+            self.assertEqual(f.getvalue()[:-1], ob_string)
+        
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("create Vashow")
+            self.assertEqual(f.getvalue()[:-1], class_error)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("create")
+            self.assertEqual(f.getvalue()[:-1], class_missing)
+
+    def test_show(self):
+        """
+        Testing do_show for all cases seeing whether correct errors displayed
+        or if correctly displayed
+        """
+
+
+
 
 
