@@ -56,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
         on the class name and id. Ex: $ show BaseModel 1234-1234-1234
         """
         parsed_line = line.split(" ")
-        if (len(parsed_line) >= 1):
+        if (len(parsed_line) >= 1) and (len(line) > 0):
             cls = parsed_line[0]
         else:
             print("** class name missing **")
@@ -89,7 +89,7 @@ class HBNBCommand(cmd.Cmd):
         Ex: $ destroy BaseModel 1234-1234-1234
         """
         parsed_line = line.split(" ")
-        if (len(parsed_line) >= 1):
+        if (len(parsed_line) >= 1) and (len(line) > 0):
             cls = parsed_line[0]
         else:
             print("** class name missing **")

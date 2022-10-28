@@ -78,9 +78,6 @@ class HBNBCommandTestCases(unittest.TestCase):
     def test_create(self):
         """Testing if do_create creates a model and then displays its id"""
         class_missing = "** class name missing **"
-        id_error = "** instance id missing **"
-        unknown_syntax = "*** Unknown syntax: {line}"
-        instance_error = "** no instance found **"
         class_error = "** class doesn't exist **"
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
@@ -107,9 +104,39 @@ class HBNBCommandTestCases(unittest.TestCase):
         """
         Testing do_show for all cases seeing whether correct errors displayed
         or if correctly displayed
+        format: $ show BaseModel 1234-1234-1234
         """
+        class_missing = "** class name missing **"
+        id_missing = "** instance id missing **"
+        instance_error = "** no instance found **"
+        class_error = "** class doesn't exist **"
 
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            identity = f.getvalue()[:-1]
 
+        with patch("sys.stdout", new=StringIO()) as f:
+            all_obs = storage.all()
+            print(all_obs[f"User.{identity}"])
+            ob_string = f.getvalue()[:-1]
 
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd(f"show User {identity}")
+            self.assertEqual(f.getvalue()[:-1], ob_string)
 
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("show")
+            self.assertEqual(f.getvalue()[:-1], class_missing)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("show User")
+            self.assertEqual(f.getvalue()[:-1], id_missing)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("show User 123-123-123-123")
+            self.assertEqual(f.getvalue()[:-1], instance_error)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("show Vashow 123-123-123-123")
+            self.assertEqual(f.getvalue()[:-1], class_error)
 
