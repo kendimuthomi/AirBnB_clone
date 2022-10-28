@@ -17,7 +17,6 @@ class FileStorageTestCase(unittest.TestCase):
 
         """
         all_objs = storage.all()
-        self.assertEqual(all_objs, {})
         new_model_1 = BaseModel()
         new_model_2 = BaseModel()
         new_model_3 = BaseModel()

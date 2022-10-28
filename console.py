@@ -17,9 +17,9 @@ class HBNBCommand(cmd.Cmd):
     new_storage = FileStorage()
     new_storage.reload()
     prompt = "(hbnb) "
-    allowed_cls = ["BaseModel", "FileStorage", "User",
+    __allowed_cls = ["BaseModel", "FileStorage", "User",
                    "Place", "City", "State", "Amenity", "Review"]
-    __methods = ["create", "all", "update", "destroy", "show", "count"]
+    __methods = ["all", "update", "destroy", "show", "count"]
 
     def do_quit(self, line):
         """Exits the programme"""
@@ -40,7 +40,7 @@ class HBNBCommand(cmd.Cmd):
         and prints the id. Ex: $ create BaseModel
         """
         if line:
-            if line in HBNBCommand.allowed_cls:
+            if line in HBNBCommand.__allowed_cls:
                 new_instance = eval(line)()
                 new_instance.save()
                 print(new_instance.id)
@@ -60,16 +60,18 @@ class HBNBCommand(cmd.Cmd):
             cls = parsed_line[0]
         else:
             print("** class name missing **")
+            return
 
         if (len(parsed_line) == 2):
             identity = parsed_line[1]
         elif (len(parsed_line) == 1):
             print("** instance id missing **")
+            return
         else:
             print(f"*** Unknown syntax: {line}")
             return
 
-        if cls in HBNBCommand.allowed_cls:
+        if cls in HBNBCommand.__allowed_cls:
             all_objects = HBNBCommand.new_storage.all()
             parsed_list = [cls, identity]
             parsed_name = ".".join(parsed_list)
@@ -91,16 +93,18 @@ class HBNBCommand(cmd.Cmd):
             cls = parsed_line[0]
         else:
             print("** class name missing **")
+            return
 
         if (len(parsed_line) == 2):
             identity = parsed_line[1]
         elif (len(parsed_line) == 1):
             print("** instance id missing **")
+            return
         else:
             print(f"*** Unknown syntax: {line}")
             return
         all_objects = HBNBCommand.new_storage.all()
-        if cls in HBNBCommand.allowed_cls:
+        if cls in HBNBCommand.__allowed_cls:
             for key, value in all_objects.items():
                 if identity == value.id:
                     del all_objects[key]
@@ -113,7 +117,8 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, line):
         """
         Prints all string representation of all instances
-        based or not on the class name.
+        based on the class name or if no class name is provided
+        Prints all instances. See usage below
         Ex: $ all BaseModel or $ all
         """
         if (line and (len(line) > 0)):
@@ -129,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         cls = parsed_line[0]
-        if cls in HBNBCommand.allowed_cls:
+        if cls in HBNBCommand.__allowed_cls:
             objects = HBNBCommand.new_storage.all()
             for value in objects.values():
                 if (value.to_dict()["__class__"]) == cls:
@@ -150,7 +155,7 @@ class HBNBCommand(cmd.Cmd):
             return
         all_obs = HBNBCommand.new_storage.all()
         cls = parsed_line[0]
-        if cls not in HBNBCommand.allowed_cls:
+        if cls not in HBNBCommand.__allowed_cls:
             print("** class doesn't exist **")
             return
         if (len(parsed_line) < 2):
@@ -221,16 +226,22 @@ class HBNBCommand(cmd.Cmd):
             return
 
         model = line_list[0]
-        if model not in HBNBCommand.allowed_cls:
+        if model not in HBNBCommand.__allowed_cls:
             print("** class doesn't exist **")
             return
 
         command = line_list[1]
         patikana = re.search(r'\(', command)
+        patikana3 = re.search(r'\)', command)
+        if patikana3 is None:
+            print(f"*** Unknown syntax: {line}")
+            return
+
         action = command[:patikana.span()[0]]
 
         if action not in HBNBCommand.__methods:
             print(f"*** Unknown syntax: {line}")
+            return
 
         arguments = command[patikana.span()[1]:-1]
         if action == "all":
