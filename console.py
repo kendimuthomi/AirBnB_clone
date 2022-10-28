@@ -21,7 +21,6 @@ class HBNBCommand(cmd.Cmd):
                    "Place", "City", "State", "Amenity", "Review"]
     __methods = ["create", "all", "update", "destroy", "show", "count"]
 
-
     def do_quit(self, line):
         """Exits the programme"""
         return True
@@ -187,9 +186,18 @@ class HBNBCommand(cmd.Cmd):
                 print("** value missing **")
                 return
             else:
-                att_val = parsed_line[3]
-                setattr(all_obs[name], attribute, eval(att_val))
+                att_val = parsed_line[3][1:-1]
+                try:
+                    att_val = int(att_val)
+                    setattr(all_obs[name], attribute, att_val)
+                except ValueError:
+                    try:
+                        att_val = float(att_val)
+                        setattr(all_obs[name], attribute, att_val)
+                    except ValueError:
+                        setattr(all_obs[name], attribute, att_val)
                 HBNBCommand.new_storage.save()
+
     def count(self, cls_name):
         """
         retrieve the number of instances of a class:
@@ -207,7 +215,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Defines what happens if the argument passed is not recognized
         """
-        line_list = line.split(".")
+        line_list = re.split(r'\.', line, 1)
         if (len(line_list) <= 1):
             print(f"*** Unknown syntax: {line}")
             return
@@ -244,7 +252,7 @@ class HBNBCommand(cmd.Cmd):
             elif (len(arguments) == 0):
                 print("** instance id missing **")
                 return
-            self.do_show(model + " " + arguments)
+            self.do_show(model + " " + arguments[1:-1])
 
         if action == "destroy":
             mini_arg = arguments.split(", ")
@@ -254,7 +262,7 @@ class HBNBCommand(cmd.Cmd):
             elif (len(arguments) == 0):
                 print("** instance id missing **")
                 return
-            self.do_destroy(model + " " + arguments)
+            self.do_destroy(model + " " + arguments[1:-1])
         if action == "update":
             patikana2 = re.search(r'\{', arguments)
             if patikana2 is not None:
@@ -263,7 +271,7 @@ class HBNBCommand(cmd.Cmd):
                 att_dict = eval(dict_json)
                 for attr, value in att_dict.items():
                     self.do_update(model + " " + identity + " "
-                            + attr + " " + '"' + value + '"')
+                                   + attr + " " + '"' + str(value) + '"')
                 return
             else:
                 mini_arg = arguments.split(", ")
@@ -276,10 +284,10 @@ class HBNBCommand(cmd.Cmd):
                 identity = mini_arg[0]
                 attr = mini_arg[1]
                 value = mini_arg[2]
-                parse_line = model + " " + identity[1:-1] + " " + attr[1:-1] +\
-                        " " + value
-                print(parse_line)
+                parse_line = model + " " + identity[1:-1] + " " + attr[1:-1]\
+                    + " " + value
                 self.do_update(parse_line)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
