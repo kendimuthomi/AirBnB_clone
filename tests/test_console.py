@@ -91,7 +91,7 @@ class HBNBCommandTestCases(unittest.TestCase):
 
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd(f'User.show("{identity}")')
-            self.assertEqual(f.getvalue()[:-1], ob_string)
+            self.assertEqual(f.getvalue().strip(), ob_string)
 
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd("create Vashow")

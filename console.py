@@ -266,6 +266,7 @@ class HBNBCommand(cmd.Cmd):
             patikana4 = re.search(r'"', arguments)
             if patikana4 is not None:
                 self.do_show(model + " " + arguments[1:-1])
+                return
             self.do_show(model + " " + arguments)
 
         if action == "destroy":
@@ -279,7 +280,8 @@ class HBNBCommand(cmd.Cmd):
 
             patikana4 = re.search(r'"', arguments)
             if patikana4 is not None:
-                self.do_show(model + " " + arguments[1:-1])
+                self.do_destroy(model + " " + arguments[1:-1])
+                return
             self.do_destroy(model + " " + arguments)
 
         if action == "update":
