@@ -61,7 +61,9 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class name missing **")
             return
-
+        if cls not in HBNBCommand.__allowed_cls:
+            print("** class doesn't exist **")
+            return
         if (len(parsed_line) == 2):
             identity = parsed_line[1]
         elif (len(parsed_line) == 1):
@@ -71,16 +73,13 @@ class HBNBCommand(cmd.Cmd):
             print(f"*** Unknown syntax: {line}")
             return
 
-        if cls in HBNBCommand.__allowed_cls:
-            all_objects = HBNBCommand.new_storage.all()
-            parsed_list = [cls, identity]
-            parsed_name = ".".join(parsed_list)
-            if parsed_name in all_objects.keys():
-                print(all_objects[parsed_name])
-            else:
-                print("** no instance found **")
+        all_objects = HBNBCommand.new_storage.all()
+        parsed_list = [cls, identity]
+        parsed_name = ".".join(parsed_list)
+        if parsed_name in all_objects.keys():
+            print(all_objects[parsed_name])
         else:
-            print("** class doesn't exist **")
+            print("** no instance found **")
 
     def do_destroy(self, line):
         """
@@ -94,7 +93,9 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class name missing **")
             return
-
+        if cls not in HBNBCommand.__allowed_cls:
+            print("** class doesn't exist **")
+            return
         if (len(parsed_line) == 2):
             identity = parsed_line[1]
         elif (len(parsed_line) == 1):
@@ -104,15 +105,13 @@ class HBNBCommand(cmd.Cmd):
             print(f"*** Unknown syntax: {line}")
             return
         all_objects = HBNBCommand.new_storage.all()
-        if cls in HBNBCommand.__allowed_cls:
-            for key, value in all_objects.items():
-                if identity == value.id:
-                    del all_objects[key]
-                    HBNBCommand.new_storage.save()
-                    return
-            print("** no instance found **")
-        else:
-            print("** class doesn't exist **")
+
+        for key, value in all_objects.items():
+            if identity == value.id:
+                del all_objects[key]
+                HBNBCommand.new_storage.save()
+                return
+        print("** no instance found **")
 
     def do_all(self, line):
         """
