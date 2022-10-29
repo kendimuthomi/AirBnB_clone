@@ -290,7 +290,9 @@ class HBNBCommand(cmd.Cmd):
                                        + attr + " " + str(value))
                 return
             else:
-                mini_arg = arguments.split(", ")
+                mini_arg = re.split(",", arguments)
+                for i in range(len(mini_arg)):
+                    mini_arg[i] = mini_arg[i].strip()
                 if (len(mini_arg) == 0):
                     print("** instance id missing **")
                     return
