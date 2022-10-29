@@ -2,6 +2,7 @@
 import unittest
 from models.base_model import BaseModel
 from models.review import Review
+from models import storage
 
 
 class ReviewTestCase(unittest.TestCase):
@@ -22,3 +23,11 @@ class ReviewTestCase(unittest.TestCase):
 
     def test_review_is_basemodel_subclass(self):
         self.assertTrue(issubclass(type(self.r), BaseModel))
+
+    def test_if_instances_stored_in_dict(self):
+        self.assertIn(self.r, storage.all().values())
+
+    def test_two_reviews_have_diff_ids(self):
+        r1 = Review()
+        r2 = Review()
+        self.assertNotEqual(r1.id, r2.id)
