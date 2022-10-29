@@ -158,7 +158,6 @@ class HBNBCommand(cmd.Cmd):
         quote_match = re.search(r'"', line)
         if quote_match is not None:
             first_part = re.split(r' ', (line[:quote_match.span()[0]]).strip())
-            print(f"First_part list: {first_part}")
             quote_match1 = re.search(r'"', line[quote_match.span()[1]:])
             num = quote_match.span()[0]
             if quote_match1 is None:
