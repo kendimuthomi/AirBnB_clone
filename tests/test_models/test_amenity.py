@@ -11,10 +11,7 @@ class AmenityTestCase(unittest.TestCase):
         self.a = Amenity()
 
     def test_class_attributes(self):
-<<<<<<< HEAD
-=======
         """tests the class attributes"""
->>>>>>> origin/kendi
         self.assertIs(type(self.a.name), str)
 
     def test_attr_are_cls_atrr(self):
