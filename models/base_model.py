@@ -11,6 +11,7 @@ class BaseModel:
         """
         initializes a new BaseModel
         using **kwargs(key word arguments)
+        and if kwargs is missing initialises automatically
 
         """
         format_str = '%Y-%m-%dT%H:%M:%S.%f'
