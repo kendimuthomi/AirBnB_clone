@@ -10,7 +10,12 @@ class AmenityTestCase(unittest.TestCase):
         self.a = Amenity()
 
     def test_class_attributes(self):
+<<<<<<< HEAD
         self.assertIs(type(self.a.name), str)
+=======
+        a = Amenity()
+        self.assertIs(type(a.name), str)
+>>>>>>> b3c2151c8997211a4d0c3f3d7e81fa0693c1a209
 
     def test_attr_are_cls_atrr(self):
         """tests that these are class attributes"""

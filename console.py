@@ -56,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
         on the class name and id. Ex: $ show BaseModel 1234-1234-1234
         """
         parsed_line = line.split(" ")
-        if (len(parsed_line) >= 1):
+        if (len(parsed_line) >= 1) and (len(line) > 0):
             cls = parsed_line[0]
         else:
             print("** class name missing **")
@@ -89,7 +89,7 @@ class HBNBCommand(cmd.Cmd):
         Ex: $ destroy BaseModel 1234-1234-1234
         """
         parsed_line = line.split(" ")
-        if (len(parsed_line) >= 1):
+        if (len(parsed_line) >= 1) and (len(line) > 0):
             cls = parsed_line[0]
         else:
             print("** class name missing **")
@@ -144,10 +144,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, line):
         """
-         Updates an instance based on the class name and id
-         by adding or updating attribute (save the change into the JSON file).
-         Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com".
-         """
+        Updates an instance based on the class name and id
+        by adding or updating attribute (save the change into the JSON file).
+        Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com".
+        """
         if (len(line) > 0):
             parsed_line = line.split(" ")
         else:
