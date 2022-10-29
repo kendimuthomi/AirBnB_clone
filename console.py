@@ -13,6 +13,7 @@ from models.review import Review
 from models.place import Place
 from models import storage
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     __allowed_cls = ["BaseModel", "FileStorage", "User",
