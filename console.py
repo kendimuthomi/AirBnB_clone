@@ -177,14 +177,10 @@ class HBNBCommand(cmd.Cmd):
         if (len(parsed_line) < 2):
             print("** instance id missing **")
             return
-        obj_dict = {}
         identity = parsed_line[1]
-        for key, obj in all_obs.items():
-            obj_dict[key] = obj.to_dict()
-
         parsed_name = [cls, identity]
         name = ".".join(parsed_name)
-        if name not in obj_dict.keys():
+        if name not in all_obs.keys():
             print("** no instance found **")
             return
         if (len(parsed_line) < 3):
@@ -194,12 +190,10 @@ class HBNBCommand(cmd.Cmd):
         attributes = []
         if attribute in ["id", "updated_at", "created_at"]:
             return
-        for value in obj_dict.values():
-            for key in value.keys():
-                if key not in ["id", "updated_at", "created_at"]:
-                    attributes.append(key)
+        for key in all_obs[name].to_dict().keys():
+            if key not in ["id", "updated_at", "created_at"]:
+                attributes.append(key)
         if attribute not in attributes:
-            print("** Attribute doesn't exist **")
             return
         else:
             if (len(parsed_line) < 4):
