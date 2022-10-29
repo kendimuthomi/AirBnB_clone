@@ -2,6 +2,7 @@
 import unittest
 from models.base_model import BaseModel
 from models.place import Place
+from models import storage
 
 
 class PlaceTestCase(unittest.TestCase):
@@ -38,3 +39,11 @@ class PlaceTestCase(unittest.TestCase):
 
     def test_place_is_instance_of_basemodel(self):
         self.assertTrue(issubclass(type(self.p), BaseModel))
+
+    def test_instance_stored_in_objects(self):
+        self.assertIn(self.p, storage.all().values())
+
+    def test_two_places_have_diff_ids(self):
+        p1 = Place()
+        p2 = Place()
+        self.assertNotEqual(p1.id, p2.id)
