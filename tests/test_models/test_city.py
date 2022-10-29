@@ -2,6 +2,7 @@
 import unittest
 from models.base_model import BaseModel
 from models.city import City
+from models import storage
 
 
 class CityTestCase(unittest.TestCase):
