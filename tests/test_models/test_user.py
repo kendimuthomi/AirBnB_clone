@@ -2,28 +2,37 @@
 import unittest
 from models.base_model import BaseModel
 from models.user import User
+from models import storage
 
 
 class UserTestCase(unittest.TestCase):
     """The unittest for the User class"""
 
+    def setUp(self):
+        self.u = User()
+
     def test_class_attrs(self):
         """Test the class attributes"""
-        u = User()
-        self.assertIs(type(u.email), str)
-        self.assertIs(type(u.last_name), str)
-        self.assertIs(type(u.first_name), str)
-        self.assertIs(type(u.password), str)
+        self.assertIs(type(self.u.email), str)
+        self.assertIs(type(self.u.last_name), str)
+        self.assertIs(type(self.u.first_name), str)
+        self.assertIs(type(self.u.password), str)
 
     def test_attrs_are_class_attrs(self):
         """Test if the attributes are class attributes"""
-        u = User()
-        self.assertTrue(hasattr(User, "first_name"))
-        self.assertTrue(hasattr(User, "last_name"))
-        self.assertTrue(hasattr(User, "password"))
-        self.assertTrue(hasattr(User, "email"))
+        self.assertTrue(hasattr(self.u, "first_name"))
+        self.assertTrue(hasattr(self.u, "last_name"))
+        self.assertTrue(hasattr(self.u, "password"))
+        self.assertTrue(hasattr(self.u, "email"))
 
     def test_user_is_an_instance_of_basemodel(self):
         """test if the class User is an instance of BaseModel class"""
-        u = User()
-        self.assertTrue(issubclass(type(u), BaseModel))
+        self.assertTrue(issubclass(type(self.u), BaseModel))
+
+    def test_instances_stored_in_objescts(self):
+        self.assertIn(self.u, storage.all().values())
+
+    def test_two_users_have_unique_ids(self):
+        u1 = User()
+        u2 = User()
+        self.assertNotEqual(u1.id, u2.id)
