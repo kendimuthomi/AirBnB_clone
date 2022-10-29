@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Defining the FileStorage Class"""
 import json
 from models.base_model import BaseModel
 
@@ -45,4 +46,4 @@ class FileStorage:
                 class_name = value["__class__"]
                 self.new(eval(class_name)(**value))
         except FileNotFoundError:
-            pass
+            return
