@@ -11,11 +11,9 @@ from models.city import City
 from models.state import State
 from models.review import Review
 from models.place import Place
-
+from models import storage
 
 class HBNBCommand(cmd.Cmd):
-    new_storage = FileStorage()
-    new_storage.reload()
     prompt = "(hbnb) "
     __allowed_cls = ["BaseModel", "FileStorage", "User",
                      "Place", "City", "State", "Amenity", "Review"]
@@ -73,7 +71,7 @@ class HBNBCommand(cmd.Cmd):
             print(f"*** Unknown syntax: {line}")
             return
 
-        all_objects = HBNBCommand.new_storage.all()
+        all_objects = storage.all()
         parsed_list = [cls, identity]
         parsed_name = ".".join(parsed_list)
         if parsed_name in all_objects.keys():
@@ -104,12 +102,12 @@ class HBNBCommand(cmd.Cmd):
         else:
             print(f"*** Unknown syntax: {line}")
             return
-        all_objects = HBNBCommand.new_storage.all()
+        all_objects = storage.all()
 
         for key, value in all_objects.items():
             if identity == value.id:
                 del all_objects[key]
-                HBNBCommand.new_storage.save()
+                storage.save()
                 return
         print("** no instance found **")
 
@@ -124,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
             parsed_line = line.split(" ")
         else:
             output_list = []
-            objects = HBNBCommand.new_storage.all()
+            objects = storage.all()
             for obj in objects.values():
                 output_list.append(obj.__str__())
             print(output_list)
@@ -136,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
 
         cls = parsed_line[0]
         if cls in HBNBCommand.__allowed_cls:
-            objects = HBNBCommand.new_storage.all()
+            objects = storage.all()
             output_list = []
             for value in objects.values():
                 if (value.to_dict()["__class__"]) == cls:
@@ -169,7 +167,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             parsed_line = line.split(" ")
 
-        all_obs = HBNBCommand.new_storage.all()
+        all_obs = storage.all()
         cls = parsed_line[0]
         if cls not in HBNBCommand.__allowed_cls:
             print("** class doesn't exist **")
@@ -193,23 +191,20 @@ class HBNBCommand(cmd.Cmd):
         for key in all_obs[name].to_dict().keys():
             if key not in ["id", "updated_at", "created_at"]:
                 attributes.append(key)
-        if attribute not in attributes:
+        if (len(parsed_line) < 4):
+            print("** value missing **")
             return
         else:
-            if (len(parsed_line) < 4):
-                print("** value missing **")
-                return
-            else:
-                att_val = eval(parsed_line[3])
-                setattr(all_obs[name], attribute, att_val)
-                HBNBCommand.new_storage.save()
+            att_val = eval(parsed_line[3])
+            setattr(all_obs[name], attribute, att_val)
+            storage.save()
 
     def count(self, cls_name):
         """
         retrieve the number of instances of a class:
         <class name>.count()
         """
-        obs = HBNBCommand.new_storage.all()
+        obs = storage.all()
         count = 0
         for ob in obs.values():
             if (cls_name == ob.to_dict()["__class__"]):
@@ -227,6 +222,9 @@ class HBNBCommand(cmd.Cmd):
             return
 
         model = line_list[0]
+        if len(model) == 0:
+            print("** class name missing **")
+            return
         if model not in HBNBCommand.__allowed_cls:
             print("** class doesn't exist **")
             return
@@ -264,7 +262,10 @@ class HBNBCommand(cmd.Cmd):
             elif (len(arguments) == 0):
                 print("** instance id missing **")
                 return
-            self.do_show(model + " " + arguments[1:-1])
+            patikana4 = re.search(r'"', arguments)
+            if patikana4 is not None:
+                self.do_show(model + " " + arguments[1:-1])
+            self.do_show(model + " " + arguments)
 
         if action == "destroy":
             mini_arg = arguments.split(", ")
@@ -274,7 +275,12 @@ class HBNBCommand(cmd.Cmd):
             elif (len(arguments) == 0):
                 print("** instance id missing **")
                 return
-            self.do_destroy(model + " " + arguments[1:-1])
+
+            patikana4 = re.search(r'"', arguments)
+            if patikana4 is not None:
+                self.do_show(model + " " + arguments[1:-1])
+            self.do_destroy(model + " " + arguments)
+
         if action == "update":
             patikana2 = re.search(r'\{', arguments)
             if patikana2 is not None:
@@ -293,10 +299,13 @@ class HBNBCommand(cmd.Cmd):
                 mini_arg = re.split(",", arguments)
                 for i in range(len(mini_arg)):
                     mini_arg[i] = mini_arg[i].strip()
-                if (len(mini_arg) == 0):
+                if (len(arguments) == 0):
                     print("** instance id missing **")
                     return
-                if len(mini_arg) != 3:
+                if len(mini_arg) == 2:
+                    print("** value missing **")
+                    return
+                if len(mini_arg) > 3:
                     print(f"*** Unknown syntax: {line}")
                     return
                 identity = mini_arg[0]
