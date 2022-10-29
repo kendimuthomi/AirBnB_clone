@@ -18,7 +18,7 @@ class HBNBCommand(cmd.Cmd):
     new_storage.reload()
     prompt = "(hbnb) "
     __allowed_cls = ["BaseModel", "FileStorage", "User",
-                   "Place", "City", "State", "Amenity", "Review"]
+                     "Place", "City", "State", "Amenity", "Review"]
     __methods = ["all", "update", "destroy", "show", "count"]
 
     def do_quit(self, line):
@@ -275,10 +275,10 @@ class HBNBCommand(cmd.Cmd):
                 for attr, value in att_dict.items():
                     if type(value) == str:
                         self.do_update(model + " " + identity + " "
-                                + attr + " " + '"' + value + '"')
+                                       + attr + " " + '"' + value + '"')
                     else:
                         self.do_update(model + " " + identity + " "
-                                + attr + " " + str(value))
+                                       + attr + " " + str(value))
                 return
             else:
                 mini_arg = arguments.split(", ")

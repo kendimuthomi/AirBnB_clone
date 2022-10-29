@@ -9,9 +9,10 @@ from console import HBNBCommand
 from models.engine.file_storage import FileStorage
 from models import storage
 
+
 class HBNBCommandTestCases(unittest.TestCase):
     """
-    unittests for the class testing prompting 
+    unittests for the class testing prompting
     of the HBNB Console
     """
     def test_prompt(self):
@@ -91,7 +92,7 @@ class HBNBCommandTestCases(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd(f'User.show("{identity}")')
             self.assertEqual(f.getvalue()[:-1], ob_string)
-        
+
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd("create Vashow")
             self.assertEqual(f.getvalue()[:-1], class_error)
@@ -142,7 +143,8 @@ class HBNBCommandTestCases(unittest.TestCase):
 
     def test_destroy(self):
         """
-        Testing do_destroy for all cases seeing whether correct errors displayed
+        Testing do_destroy for all cases and seeing
+        whether correct errors displayed if prompt is flawed
         or if correctly displayed
         format: $ destroy BaseModel 1234-1234-1234
         """
@@ -179,7 +181,7 @@ class HBNBCommandTestCases(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd("destroy Vashow 123-123-123-123")
             self.assertEqual(f.getvalue()[:-1], class_error)
-        
+
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd(f"destroy State {identity}")
             HBNBCommand().onecmd(f"show State {identity}")
@@ -209,7 +211,6 @@ class HBNBCommandTestCases(unittest.TestCase):
         all_obs[f"User.{identity}"].last_name = "Muriuki"
         all_obs[f"User.{identity}"].number = "42"
 
-        
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd("update")
             self.assertEqual(f.getvalue()[:-1], class_missing)
@@ -256,4 +257,3 @@ class HBNBCommandTestCases(unittest.TestCase):
         all_obs = storage.all()
         changed_num = all_obs[f"User.{identity}"].number
         self.assertEqual(changed_num, 2)
-
