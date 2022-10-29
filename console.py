@@ -123,9 +123,11 @@ class HBNBCommand(cmd.Cmd):
         if (line and (len(line) > 0)):
             parsed_line = line.split(" ")
         else:
+            output_list = []
             objects = HBNBCommand.new_storage.all()
             for obj in objects.values():
-                print(obj)
+                output_list.append(obj.__str__())
+            print(output_list)
             return
 
         if (len(parsed_line) > 1):
@@ -135,9 +137,11 @@ class HBNBCommand(cmd.Cmd):
         cls = parsed_line[0]
         if cls in HBNBCommand.__allowed_cls:
             objects = HBNBCommand.new_storage.all()
+            output_list = []
             for value in objects.values():
                 if (value.to_dict()["__class__"]) == cls:
-                    print(value)
+                    output_list.append(value.__str__())
+            print(output_list)
         else:
             print("** class doesn't exist **")
 
