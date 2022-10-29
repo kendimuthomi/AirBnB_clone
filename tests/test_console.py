@@ -185,3 +185,75 @@ class HBNBCommandTestCases(unittest.TestCase):
             HBNBCommand().onecmd(f"show State {identity}")
             self.assertEqual(f.getvalue()[:-1], instance_error)
 
+    def test_update(self):
+        """
+        Testing do_update for all cases seeing whether correct errors displayed
+        trying edge cases and seeing whether the changes are in the JSON file
+        Usage: update BaseModel 1234-1234-1234 email "aibnb@mail.com"
+        """
+        class_missing = "** class name missing **"
+        id_missing = "** instance id missing **"
+        instance_error = "** no instance found **"
+        class_error = "** class doesn't exist **"
+        attribute_name_missing = "** attribute name missing **"
+        forbidden_attributes = "Cannot update those attributes"
+        attribute_error = "** Attribute doesn't exist **"
+        value_missing = "** value missing **"
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            identity = f.getvalue()[:-1]
+
+        all_obs = storage.all()
+        all_obs[f"User.{identity}"].first_name = "Jackline"
+        all_obs[f"User.{identity}"].last_name = "Muriuki"
+        all_obs[f"User.{identity}"].number = "42"
+
+        
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("update")
+            self.assertEqual(f.getvalue()[:-1], class_missing)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("update User")
+            self.assertEqual(f.getvalue()[:-1], id_missing)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("update User 123-123-12312")
+            self.assertEqual(f.getvalue()[:-1], instance_error)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("update Kendi 123-123-12312")
+            self.assertEqual(f.getvalue()[:-1], class_error)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd(f"update User {identity}")
+            self.assertEqual(f.getvalue()[:-1], attribute_name_missing)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd(f"update User {identity} updated_at")
+            self.assertEqual(f.getvalue()[:-1], forbidden_attributes)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd(f"update User {identity} email")
+            self.assertEqual(f.getvalue()[:-1], attribute_error)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd(f"update User {identity} first_name")
+            self.assertEqual(f.getvalue()[:-1], value_missing)
+
+        HBNBCommand().onecmd(f'update User {identity} first_name "Muriuki"')
+        all_obs = storage.all()
+        changed_name = all_obs[f"User.{identity}"].first_name
+        self.assertEqual(changed_name, "Muriuki")
+
+        HBNBCommand().onecmd(f'update User {identity} last_name "Kendi"')
+        all_obs = storage.all()
+        changed_name = all_obs[f"User.{identity}"].last_name
+        self.assertEqual(changed_name, "Kendi")
+
+        HBNBCommand().onecmd(f'update User {identity} number 2')
+        all_obs = storage.all()
+        changed_num = all_obs[f"User.{identity}"].number
+        self.assertEqual(changed_num, 2)
+
