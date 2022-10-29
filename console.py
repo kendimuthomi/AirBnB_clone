@@ -184,23 +184,15 @@ class HBNBCommand(cmd.Cmd):
                 if key not in ["id", "updated_at", "created_at"]:
                     attributes.append(key)
         if attribute not in attributes:
-            print("** Attribute missing **")
+            print("** Attribute doesn't exist **")
             return
         else:
             if (len(parsed_line) < 4):
                 print("** value missing **")
                 return
             else:
-                att_val = parsed_line[3][1:-1]
-                try:
-                    att_val = int(att_val)
-                    setattr(all_obs[name], attribute, att_val)
-                except ValueError:
-                    try:
-                        att_val = float(att_val)
-                        setattr(all_obs[name], attribute, att_val)
-                    except ValueError:
-                        setattr(all_obs[name], attribute, att_val)
+                att_val = eval(parsed_line[3])
+                setattr(all_obs[name], attribute, att_val)
                 HBNBCommand.new_storage.save()
 
     def count(self, cls_name):
@@ -281,8 +273,12 @@ class HBNBCommand(cmd.Cmd):
                 dict_json = arguments[patikana2.span()[1] - 1:]
                 att_dict = eval(dict_json)
                 for attr, value in att_dict.items():
-                    self.do_update(model + " " + identity + " "
-                                   + attr + " " + '"' + str(value) + '"')
+                    if type(value) == str:
+                        self.do_update(model + " " + identity + " "
+                                + attr + " " + '"' + value + '"')
+                    else:
+                        self.do_update(model + " " + identity + " "
+                                + attr + " " + str(value))
                 return
             else:
                 mini_arg = arguments.split(", ")
