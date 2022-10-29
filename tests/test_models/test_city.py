@@ -21,3 +21,13 @@ class CityTestCase(unittest.TestCase):
 
     def test_city_is_basemodel_subclass(self):
         self.assertTrue(issubclass(type(self.c), BaseModel))
+
+    def test_instances_stored_in_objects(self):
+        """checks if the instances of city are stored in __objects"""
+        self.assertIn(self.c, storage.all().values())
+
+    def test_two_city_instances_have_different_ids(self):
+        """tests that each instance of city has an unique id"""
+        c1 = City()
+        c2 = City()
+        self.assertNotEqual(c1.id, c2.id)
