@@ -2,6 +2,7 @@
 """Defines the BaseModel class"""
 import uuid
 from datetime import datetime
+import models
 
 
 class BaseModel:
@@ -21,10 +22,9 @@ class BaseModel:
                     if key != "__class__":
                         self.__dict__[key] = value
         else:
-            from models import storage
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
-            storage.new(self)
+            models.storage.new(self)
 
     def __str__(self):
         """returns the representation of the BaseModel instance"""
@@ -33,9 +33,8 @@ class BaseModel:
 
     def save(self):
         """Updates updated_at with the current time"""
-        from models import storage
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """returns a dictionary containing all key/value of __dict__"""
