@@ -31,4 +31,3 @@ class AmenityTestCase(unittest.TestCase):
         a1 = Amenity()
         a2 = Amenity()
         self.assertNotEqual(a1.id, a2.id)
-
