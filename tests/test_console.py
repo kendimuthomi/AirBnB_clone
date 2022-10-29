@@ -198,8 +198,6 @@ class HBNBCommandTestCases(unittest.TestCase):
         instance_error = "** no instance found **"
         class_error = "** class doesn't exist **"
         attribute_name_missing = "** attribute name missing **"
-        forbidden_attributes = "Cannot update those attributes"
-        attribute_error = "** Attribute doesn't exist **"
         value_missing = "** value missing **"
 
         with patch("sys.stdout", new=StringIO()) as f:
@@ -230,14 +228,6 @@ class HBNBCommandTestCases(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd(f"update User {identity}")
             self.assertEqual(f.getvalue()[:-1], attribute_name_missing)
-
-        with patch("sys.stdout", new=StringIO()) as f:
-            HBNBCommand().onecmd(f"update User {identity} updated_at")
-            self.assertEqual(f.getvalue()[:-1], forbidden_attributes)
-
-        with patch("sys.stdout", new=StringIO()) as f:
-            HBNBCommand().onecmd(f"update User {identity} email")
-            self.assertEqual(f.getvalue()[:-1], attribute_error)
 
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd(f"update User {identity} first_name")
