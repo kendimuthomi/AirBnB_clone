@@ -140,3 +140,48 @@ class HBNBCommandTestCases(unittest.TestCase):
             HBNBCommand().onecmd("show Vashow 123-123-123-123")
             self.assertEqual(f.getvalue()[:-1], class_error)
 
+    def test_destroy(self):
+        """
+        Testing do_destroy for all cases seeing whether correct errors displayed
+        or if correctly displayed
+        format: $ destroy BaseModel 1234-1234-1234
+        """
+        class_missing = "** class name missing **"
+        id_missing = "** instance id missing **"
+        instance_error = "** no instance found **"
+        class_error = "** class doesn't exist **"
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("create State")
+            identity = f.getvalue()[:-1]
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            all_obs = storage.all()
+            print(all_obs[f"State.{identity}"])
+            ob_string = f.getvalue()[:-1]
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd(f"show State {identity}")
+            self.assertEqual(f.getvalue()[:-1], ob_string)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy")
+            self.assertEqual(f.getvalue()[:-1], class_missing)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy State")
+            self.assertEqual(f.getvalue()[:-1], id_missing)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy State 123-123-123-123")
+            self.assertEqual(f.getvalue()[:-1], instance_error)
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy Vashow 123-123-123-123")
+            self.assertEqual(f.getvalue()[:-1], class_error)
+        
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd(f"destroy State {identity}")
+            HBNBCommand().onecmd(f"show State {identity}")
+            self.assertEqual(f.getvalue()[:-1], instance_error)
+
