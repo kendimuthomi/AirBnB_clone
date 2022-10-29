@@ -194,7 +194,6 @@ class HBNBCommand(cmd.Cmd):
         attribute = parsed_line[2]
         attributes = []
         if attribute in ["id", "updated_at", "created_at"]:
-            print("Cannot update those attributes")
             return
         for value in obj_dict.values():
             for key in value.keys():
