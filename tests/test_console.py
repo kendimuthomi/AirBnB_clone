@@ -192,6 +192,7 @@ class HBNBCommandTestCases(unittest.TestCase):
         Testing do_update for all cases seeing whether correct errors displayed
         trying edge cases and seeing whether the changes are in the JSON file
         And testing whether it changes existing attribute values
+        and also if it can add attributes to existing instances
         Usage: update BaseModel 1234-1234-1234 email "aibnb@mail.com"
         """
         class_missing = "** class name missing **"
@@ -249,11 +250,6 @@ class HBNBCommandTestCases(unittest.TestCase):
         changed_num = all_obs[f"User.{identity}"].number
         self.assertEqual(changed_num, 2)
 
-    def test_update_add_attributes(self):
-        """
-        Test whether do_update() can add attributes to an instance
-        and whether they retain their type
-        """
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
             identity = f.getvalue()[:-1]
