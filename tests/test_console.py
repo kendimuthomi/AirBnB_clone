@@ -187,17 +187,18 @@ class HBNBCommandTestCases(unittest.TestCase):
             HBNBCommand().onecmd(f"show State {identity}")
             self.assertEqual(f.getvalue()[:-1], instance_error)
 
-    def test_update(self):
+    def test_updateErrorsAndNormal(self):
         """
         Testing do_update for all cases seeing whether correct errors displayed
         trying edge cases and seeing whether the changes are in the JSON file
+        And testing whether it changes existing attribute values
         Usage: update BaseModel 1234-1234-1234 email "aibnb@mail.com"
         """
         class_missing = "** class name missing **"
         id_missing = "** instance id missing **"
         instance_error = "** no instance found **"
-        class_error = "** class doesn't exist **"
         attribute_name_missing = "** attribute name missing **"
+        class_error = "** class doesn't exist **"
         value_missing = "** value missing **"
 
         with patch("sys.stdout", new=StringIO()) as f:
@@ -247,3 +248,30 @@ class HBNBCommandTestCases(unittest.TestCase):
         all_obs = storage.all()
         changed_num = all_obs[f"User.{identity}"].number
         self.assertEqual(changed_num, 2)
+
+
+    def test_updateAddAttributes(self):
+        """
+        Test whether do_update() can add attributes to an instance
+        and whether they retain their type
+        """
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            identity = f.getvalue()[:-1]
+
+        all_obs = storage.all()
+        HBNBCommand().onecmd(f'update User {identity} key "value"')
+        added_attribute = all_obs[f"User.{identity}"].key
+        self.assertEqual(added_attribute, "value")
+        self.assertIsInstance(added_attribute, str)
+
+        HBNBCommand().onecmd(f'update User {identity} num 42')
+        added_attribute = all_obs[f"User.{identity}"].num
+        self.assertEqual(added_attribute, 42)
+        self.assertIsInstance(added_attribute, int)
+
+        HBNBCommand().onecmd(f'update User {identity} flt 42.42')
+        added_attribute = all_obs[f"User.{identity}"].flt
+        self.assertEqual(added_attribute, 42.42)
+        self.assertIsInstance(added_attribute, float)
+

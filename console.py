@@ -187,11 +187,8 @@ class HBNBCommand(cmd.Cmd):
             return
         attribute = parsed_line[2]
         attributes = []
-        if attribute in ["id", "updated_at", "created_at"]:
-            return
         for key in all_obs[name].to_dict().keys():
-            if key not in ["id", "updated_at", "created_at"]:
-                attributes.append(key)
+            attributes.append(key)
         if (len(parsed_line) < 4):
             print("** value missing **")
             return
