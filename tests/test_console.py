@@ -222,7 +222,6 @@ class HBNBCommandTestCases(unittest.TestCase):
             HBNBCommand().onecmd("all Vashow")
             self.assertEqual(error, f.getvalue()[:-1])
 
-
     def test_update_errors_and_normal(self):
         """
         Testing do_update for all cases seeing whether correct errors displayed
@@ -359,7 +358,7 @@ class HBNBCommandTestCases(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as num:
             HBNBCommand().onecmd(f"{cls}.count()")
             number = int(num.getvalue()[:-1])
-        
+
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd(f"{cls}.destroy({identity})")
             HBNBCommand().onecmd(f"{cls}.count()")
@@ -414,7 +413,7 @@ class HBNBCommandTestCases(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as newId:
             HBNBCommand().onecmd("create User")
             identity1 = newId.getvalue()[:-1]
- 
+
         with patch("sys.stdout", new=StringIO()) as show:
             HBNBCommand().onecmd(f"show User {identity0}")
             self.assertNotEqual(show.getvalue()[:-1], instance_error)
@@ -445,8 +444,10 @@ class HBNBCommandTestCases(unittest.TestCase):
 
     def test_dot_update(self):
         """
-        Testing if <class name>.update(<id>, <attribute name>, <attribute value>)
-        works same as update <class name> <id> <attribute name> <attribute value>
+        Testing if
+        <class name>.update(<id>, <attribute>, <value>)
+        works same as
+        update <class name> <id> <attribute> <value>
         """
         id_missing = "** instance id missing **"
         instance_error = "** no instance found **"
@@ -483,12 +484,14 @@ class HBNBCommandTestCases(unittest.TestCase):
             HBNBCommand().onecmd(f'User.update("{identity}", "first_name")')
             self.assertEqual(f.getvalue()[:-1], value_missing)
 
-        HBNBCommand().onecmd(f'User.update("{identity}", "first_name", "Muriuki")')
+        HBNBCommand().onecmd(f'User.update("{identity}", "first_name"\
+                             , "Muriuki")')
         all_obs = storage.all()
         changed_name = all_obs[f"User.{identity}"].first_name
         self.assertEqual(changed_name, "Muriuki")
 
-        HBNBCommand().onecmd(f'User.update("{identity}", "last_name", "Kendi")')
+        HBNBCommand().onecmd(f'User.update("{identity}"\
+                             , "last_name", "Kendi")')
         all_obs = storage.all()
         changed_name = all_obs[f"User.{identity}"].last_name
         self.assertEqual(changed_name, "Kendi")
@@ -508,19 +511,17 @@ class HBNBCommandTestCases(unittest.TestCase):
             identity = f.getvalue()[:-1]
 
         all_obs = storage.all()
-        HBNBCommand().onecmd(f'User.update("{identity}", "key", "value")')
+        HBNBCommand().onecmd(f'User.update({identity}, key, "value")')
         added_attribute = all_obs[f"User.{identity}"].key
         self.assertEqual(added_attribute, "value")
         self.assertIsInstance(added_attribute, str)
 
-        HBNBCommand().onecmd(f'User.update("{identity}", "num", 42)')
+        HBNBCommand().onecmd(f'User.update("{identity}", num, 42)')
         added_attribute = all_obs[f"User.{identity}"].num
         self.assertEqual(added_attribute, 42)
         self.assertIsInstance(added_attribute, int)
 
-        HBNBCommand().onecmd(f'User.update("{identity}", "flt", 42.42)')
+        HBNBCommand().onecmd(f'User.update({identity}, "flt", 42.42)')
         added_attribute = all_obs[f"User.{identity}"].flt
         self.assertEqual(added_attribute, 42.42)
         self.assertIsInstance(added_attribute, float)
-
-

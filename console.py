@@ -310,8 +310,16 @@ class HBNBCommand(cmd.Cmd):
                     return
 
                 identity = mini_arg[0]
+                idmatchq = re.search(r'"', identity)
+                if idmatchq is not None:
+                    idmatchq2 = re.search(r'"', identity[1:])
+                    if idmatchq2 is not None:
+                        identity = identity[1:-1]
+                    else:
+                        printf(f"*** Unknown syntax: {line}")
+                        return
                 all_obs = storage.all()
-                if f"{model}.{identity[1:-1]}" not in all_obs.keys():
+                if f"{model}.{identity}" not in all_obs.keys():
                     print("** no instance found **")
                     return
                 if (len(mini_arg) == 1):
@@ -319,8 +327,17 @@ class HBNBCommand(cmd.Cmd):
                     return
 
                 attr = mini_arg[1]
+                attrmatchq = re.search(r'"', attr)
+                if attrmatchq is not None:
+                    attrmatchq2 = re.search(r'"', attr[1:])
+                    if attrmatchq2 is not None:
+                        attr = attr[1:-1]
+                    else:
+                        printf(f"*** Unknown syntax: {line}")
+                        return
+
                 value = mini_arg[2]
-                parse_line = model + " " + identity[1:-1] + " " + attr[1:-1]\
+                parse_line = model + " " + identity + " " + attr\
                     + " " + value
                 self.do_update(parse_line)
 
