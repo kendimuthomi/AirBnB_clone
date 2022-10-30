@@ -30,9 +30,11 @@ class UserTestCase(unittest.TestCase):
         self.assertTrue(issubclass(type(self.u), BaseModel))
 
     def test_instances_stored_in_objescts(self):
+        """tests if the instances of amenity are stored in __objects"""
         self.assertIn(self.u, storage.all().values())
 
     def test_two_users_have_unique_ids(self):
+        """tests if two instances of the subclass User have unique ids"""
         u1 = User()
         u2 = User()
         self.assertNotEqual(u1.id, u2.id)

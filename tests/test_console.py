@@ -16,6 +16,7 @@ class HBNBCommandTestCases(unittest.TestCase):
     of the HBNB Console
     """
     maxDiff = None
+
     def test_prompt(self):
         """
         Checking if the prompt is correct
@@ -285,7 +286,6 @@ class HBNBCommandTestCases(unittest.TestCase):
         changed_num = all_obs[f"User.{identity}"].number
         self.assertEqual(changed_num, 2)
 
-
     def test_update_add_attributes(self):
         """
         Test whether do_update() can add attributes to an instance
@@ -317,5 +317,3 @@ class HBNBCommandTestCases(unittest.TestCase):
         And whether it performs the same error checks as: all <class name>
         Usage <class name>.all()
         """
-
-
