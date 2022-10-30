@@ -12,6 +12,7 @@ class PlaceTestCase(unittest.TestCase):
         self.p = Place()
 
     def test_class_attributes(self):
+        """tests if class attributes are the right type"""
         self.assertIs(type(self.p.city_id), str)
         self.assertIs(type(self.p.user_id), str)
         self.assertIs(type(self.p.name), str)
@@ -25,6 +26,7 @@ class PlaceTestCase(unittest.TestCase):
         self.assertIs(type(self.p.amenity_ids), list)
 
     def test_attr_are_class_attr(self):
+        """tests that all attributes are present"""
         self.assertTrue(hasattr(self.p, "city_id"))
         self.assertTrue(hasattr(self.p, "user_id"))
         self.assertTrue(hasattr(self.p, "name"))
@@ -38,12 +40,15 @@ class PlaceTestCase(unittest.TestCase):
         self.assertTrue(hasattr(self.p, "amenity_ids"))
 
     def test_place_is_instance_of_basemodel(self):
+        """tests that place is an instance of basemodel"""
         self.assertTrue(issubclass(type(self.p), BaseModel))
 
     def test_instance_stored_in_objects(self):
+        """tests that all instances of Place are stored in __objects"""
         self.assertIn(self.p, storage.all().values())
 
     def test_two_places_have_diff_ids(self):
+        """tests that all instances of place have unique ids"""
         p1 = Place()
         p2 = Place()
         self.assertNotEqual(p1.id, p2.id)
