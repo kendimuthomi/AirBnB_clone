@@ -311,4 +311,3 @@ class HBNBCommandTestCases(unittest.TestCase):
         And whether it performs the same error checks as: all <class name>
         Usage <class name>.all()
         """
-
