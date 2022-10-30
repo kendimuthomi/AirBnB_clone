@@ -308,7 +308,16 @@ class HBNBCommand(cmd.Cmd):
                 if len(mini_arg) > 3:
                     print(f"*** Unknown syntax: {line}")
                     return
+
                 identity = mini_arg[0]
+                all_obs = storage.all()
+                if f"{model}.{identity[1:-1]}" not in all_obs.keys():
+                    print("** no instance found **")
+                    return
+                if (len(mini_arg) == 1):
+                    print("** attribute name missing **")
+                    return
+
                 attr = mini_arg[1]
                 value = mini_arg[2]
                 parse_line = model + " " + identity[1:-1] + " " + attr[1:-1]\
