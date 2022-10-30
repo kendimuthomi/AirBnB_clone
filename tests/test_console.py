@@ -317,3 +317,19 @@ class HBNBCommandTestCases(unittest.TestCase):
         And whether it performs the same error checks as: all <class name>
         Usage <class name>.all()
         """
+        storage.reload()
+        all_obs = storage.all()
+        error = "** class doesn't exist **"
+        spec_obs_list = []
+        for ob in all_obs.values():
+            if ob.to_dict()["__class__"] == "BaseModel":
+                spec_obs_list.append(ob.__str__())
+        obs_spec_str = str(spec_obs_list)
+
+        with patch("sys.stdout", new=StringIO()) as f2:
+            HBNBCommand().onecmd("BaseModel.all()")
+            self.assertEqual(obs_spec_str, f2.getvalue()[:-1])
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("Kendi.all()")
+            self.assertEqual(error, f.getvalue()[:-1])
