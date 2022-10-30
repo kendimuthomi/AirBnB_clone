@@ -1,6 +1,8 @@
 #!/usr/bin/python3
-""" Unittests for the console.py"""
-
+"""
+Unittests for the console.py
+in hopes of catching out the edge cases
+"""
 import unittest
 import sys
 from io import StringIO
@@ -19,7 +21,7 @@ class HBNBCommandTestCases(unittest.TestCase):
 
     def test_prompt(self):
         """
-        Checking if the prompt is correct
+        Checking if the prompt in the console is correct
         """
         prompt = "(hbnb) "
         self.assertEqual(prompt, HBNBCommand.prompt)
@@ -295,17 +297,17 @@ class HBNBCommandTestCases(unittest.TestCase):
             identity = f.getvalue()[:-1]
 
         all_obs = storage.all()
-        HBNBCommand().onecmd(f'update User {identity} key "value"')
+        HBNBCommand().onecmd(f'update User {identity} "key" "value"')
         added_attribute = all_obs[f"User.{identity}"].key
         self.assertEqual(added_attribute, "value")
         self.assertIsInstance(added_attribute, str)
 
-        HBNBCommand().onecmd(f'update User {identity} num 42')
+        HBNBCommand().onecmd(f'update User {identity} "num" 42')
         added_attribute = all_obs[f"User.{identity}"].num
         self.assertEqual(added_attribute, 42)
         self.assertIsInstance(added_attribute, int)
 
-        HBNBCommand().onecmd(f'update User {identity} flt 42.42')
+        HBNBCommand().onecmd(f'update User {identity} "flt" 42.42')
         added_attribute = all_obs[f"User.{identity}"].flt
         self.assertEqual(added_attribute, 42.42)
         self.assertIsInstance(added_attribute, float)
