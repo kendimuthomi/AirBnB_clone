@@ -248,7 +248,7 @@ class HBNBCommandTestCases(unittest.TestCase):
         all_obs = storage.all()
         changed_num = all_obs[f"User.{identity}"].number
         self.assertEqual(changed_num, 2)
-"""
+
     def test_update_add_attributes(self):
         """
         Test whether do_update() can add attributes to an instance
@@ -273,4 +273,3 @@ class HBNBCommandTestCases(unittest.TestCase):
         added_attribute = all_obs[f"User.{identity}"].flt
         self.assertEqual(added_attribute, 42.42)
         self.assertIsInstance(added_attribute, float)
-"""
