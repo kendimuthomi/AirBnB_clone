@@ -198,6 +198,7 @@ class HBNBCommandTestCases(unittest.TestCase):
         storage.reload()
         all_obs = storage.all()
         obs_list = []
+        error = "** class doesn't exist **"
         for ob in all_obs.values():
             obs_list.append(ob.__str__())
         obs_str = str(obs_list)
@@ -215,6 +216,11 @@ class HBNBCommandTestCases(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as f2:
             HBNBCommand().onecmd("all User")
             self.assertEqual(obs_spec_str, f2.getvalue()[:-1])
+
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("all Vashow")
+            self.assertEqual(error, f.getvalue()[:-1])
+
 
     def test_update_errors_and_normal(self):
         """
