@@ -187,7 +187,7 @@ class HBNBCommandTestCases(unittest.TestCase):
             HBNBCommand().onecmd(f"show State {identity}")
             self.assertEqual(f.getvalue()[:-1], instance_error)
 
-    def test_updateErrorsAndNormal(self):
+    def test_update_errors_and_normal(self):
         """
         Testing do_update for all cases seeing whether correct errors displayed
         trying edge cases and seeing whether the changes are in the JSON file
@@ -249,8 +249,7 @@ class HBNBCommandTestCases(unittest.TestCase):
         changed_num = all_obs[f"User.{identity}"].number
         self.assertEqual(changed_num, 2)
 
-
-    def test_updateAddAttributes(self):
+    def test_update_add_attributes(self):
         """
         Test whether do_update() can add attributes to an instance
         and whether they retain their type
@@ -274,4 +273,3 @@ class HBNBCommandTestCases(unittest.TestCase):
         added_attribute = all_obs[f"User.{identity}"].flt
         self.assertEqual(added_attribute, 42.42)
         self.assertIsInstance(added_attribute, float)
-
