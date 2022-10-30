@@ -15,6 +15,7 @@ class HBNBCommandTestCases(unittest.TestCase):
     unittests for the class testing prompting
     of the HBNB Console
     """
+    maxDiff = None
     def test_prompt(self):
         """
         Checking if the prompt is correct
@@ -187,7 +188,36 @@ class HBNBCommandTestCases(unittest.TestCase):
             HBNBCommand().onecmd(f"show State {identity}")
             self.assertEqual(f.getvalue()[:-1], instance_error)
 
-    def test_updateErrorsAndNormal(self):
+    def test_all(self):
+        """
+        Testing do_all for all cases and seeing
+        whether correct errors displayed if prompt is flawed
+        or if correctly displayed
+        format: $ $ all BaseModel or $ all
+        """
+        storage.reload()
+        all_obs = storage.all()
+        obs_list = []
+        for ob in all_obs.values():
+            obs_list.append(ob.__str__())
+        obs_str = str(obs_list)
+
+        with patch("sys.stdout", new=StringIO()) as f2:
+            HBNBCommand().onecmd("all")
+            self.assertEqual(obs_str, f2.getvalue()[:-1])
+
+        spec_obs_list = []
+        for ob in all_obs.values():
+            if ob.to_dict()["__class__"] == "User":
+                spec_obs_list.append(ob.__str__())
+        obs_spec_str = str(spec_obs_list)
+
+        with patch("sys.stdout", new=StringIO()) as f2:
+            HBNBCommand().onecmd("all User")
+            self.assertEqual(obs_spec_str, f2.getvalue()[:-1])
+
+
+    def test_update_errors_and_normal(self):
         """
         Testing do_update for all cases seeing whether correct errors displayed
         trying edge cases and seeing whether the changes are in the JSON file
@@ -250,7 +280,7 @@ class HBNBCommandTestCases(unittest.TestCase):
         self.assertEqual(changed_num, 2)
 
 
-    def test_updateAddAttributes(self):
+    def test_update_add_attributes(self):
         """
         Test whether do_update() can add attributes to an instance
         and whether they retain their type
@@ -274,4 +304,12 @@ class HBNBCommandTestCases(unittest.TestCase):
         added_attribute = all_obs[f"User.{identity}"].flt
         self.assertEqual(added_attribute, 42.42)
         self.assertIsInstance(added_attribute, float)
+
+    def test_dot_all(self):
+        """
+        Tests for the all.() func when passed into the console
+        And whether it performs the same error checks as: all <class name>
+        Usage <class name>.all()
+        """
+
 
