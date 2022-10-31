@@ -5,6 +5,7 @@ from models import storage
 from models.base_model import BaseModel
 import datetime
 import json
+from models.engine.file_storage import FileStorage
 
 
 class FileStorageTestCase(unittest.TestCase):
@@ -57,12 +58,11 @@ class FileStorageTestCase(unittest.TestCase):
         with open("file.json", encoding="utf-8") as f:
             all_dicts = json.load(f)
 
-        objects_values = []
+        objects_ids = []
         for obj in all_dicts.values():
-            for values in obj.to_dict().values():
-                objects_values.append(values)
+            objects_ids.append(obj["id"])
 
-        self.assertIn(model.id, objects_values)
-        self.assertIn(model_1.id, objects_values)
-        self.assertIn(model_2.id, objects_values)
+        self.assertIn(model.id, objects_ids)
+        self.assertIn(model_1.id, objects_ids)
+        self.assertIn(model_2.id, objects_ids)
 
