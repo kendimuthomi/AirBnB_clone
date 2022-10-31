@@ -55,7 +55,7 @@ class FileStorageTestCase(unittest.TestCase):
 
         objects_values = []
         for obj in all_dicts.values():
-            for values in obj.values():
+            for values in obj.to_dict().values():
                 objects_values.append(values)
 
         self.assertIn(model.id, objects_values)
