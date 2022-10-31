@@ -41,7 +41,7 @@ Functions:
 
 ## Console
 
-The console. Venture into the console.py file to its inner workings. Here we entail about how it works
+The console. Venture into the console.py file to its inner workings. Here we entail about how it works without getting into its mechanics.
 If it has been a long time since working with python don't worry I got you, first execute the file console.py `$ ./console.py` (can't believe you had to be told this)
 Now you are in the console
 Next you want to prompt help
