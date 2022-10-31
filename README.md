@@ -4,7 +4,7 @@ AirBnB site.
 + models
 
 
-###base_model
+### base_model
 
 Lets start with the super-model (pun intended) the BaseModel that contains the methods and the preliminary attributes to the subsequent classes which will inherit from it
 Funcs:
@@ -26,7 +26,7 @@ just detailing extra attributes it has to distinguish each from the other.
 + models.engine
 
 
-###file_storage
+### file_storage
 
 This here class deals with serialization and deserialization of previously created instances
 Functions:
@@ -39,7 +39,8 @@ Functions:
 - reload
 	- Here is the tricky part, it deserializes the data from the json file and using the class name attribute value serializes the objects into a variable by creating objects from the dictionary representations this by calling the new func (the code does a better explanation that's what we call pythonic code, duh!)
 
-##Console
+## Console
+
 The console. Venture into the console.py file to its inner workings. Here we entail about how it works
 If it has been a long time since working with python don't worry I got you, first execute the file console.py `$ ./console.py` (can't believe you had to be told this)
 Now you are in the console
