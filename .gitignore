@@ -1,0 +1,12 @@
+#ignore the binary files
+**/__pycache__
+
+*pyc
+
+#ignore the output file
+
+file.json
+
+#ignore the script for pushing
+
+git_push
