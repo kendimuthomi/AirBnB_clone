@@ -35,9 +35,9 @@ Functions:
 - new
 	- takes in a model instance and adds it to the dictionary of current objects
 - save
-	- Using the dictionary of current objects it stores the dictionary representation of them (using to_dict()) in a storage json file.
+	- Using the dictionary of current objects it serializes the dictionary representation of them (using to_dict()) in a storage json file.
 - reload
-	- Here is the tricky part, it deserializes the data from the json file and using the class name attribute value serializes the objects into a variable by creating objects from the dictionary representations this by calling the new func (the code does a better explanation that's what we call pythonic code, duh!)
+	- Here is the tricky part, it deserializes the data from the json file and using the class name attribute value serializes the objects into a variable by creating objects from the dictionary representations, this is done by calling new() on the dictionary representations (the code does a better explanation and that's what we call pythonic code boys and girls and the gentlefolk of course)
 
 ## Console
 
