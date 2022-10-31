@@ -99,7 +99,7 @@ The update() method should get special attention first it has two ways in which 
 
 1. `<class name>.update(<id>, <attribute name>, <attribute value>)`
 
-Use quotes as you please (I have already fancied it up) though it should be noted that the attribute value varies depending on the type of data it is if it is a string it SHOULD ALWAYS BE IN QUOTES, otherwise if not it SHOULD NOT be in quotes this is important as:
+Use quotes as you please (I have already fancied it up) though it should be noted that the attribute value varies depending on the type of data it is; if it is a string it SHOULD ALWAYS BE IN QUOTES, otherwise it SHOULD NOT be in quotes, this is important as:
 
 `(hbnb) User.update(2312312312sdfasdf, number, "4")`
 
@@ -107,7 +107,7 @@ is not the same as
 
 `(hbnb) User.update(2312312312sdfasdf, number, 4)`
 
-The first gives number a STRING attribute and the second gives it an INTEGER attribute value.
+The first gives the number attribute a STRING value "4" and the second gives it an INTEGER value 4.
 
 
 Next I'll give you another way to use update() but this time using a dictionary:
