@@ -86,7 +86,7 @@ class HBNBCommand(cmd.Cmd):
         (save the change into the JSON file).
         Ex: $ destroy BaseModel 1234-1234-1234
         """
-        parsed_line = line.split(" ")
+        parsed_line = re.split(r" ", line, 1)
         if (len(parsed_line) >= 1) and (len(line) > 0):
             cls = parsed_line[0]
         else:
@@ -110,7 +110,7 @@ class HBNBCommand(cmd.Cmd):
                 del all_objects[key]
                 storage.save()
                 return
-         print("** no instance found **")
+        print("** no instance found **")
 
     def do_all(self, line):
         """

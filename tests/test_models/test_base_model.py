@@ -31,7 +31,7 @@ class BaseModelTestCase(unittest.TestCase):
         self.assertIsInstance(my_model.updated_at, datetime.datetime)
         self.assertIsNot(my_model.updated_at, initial_datetime)
 
-        def test_save_update_file(self):
+    def test_save_update_file(self):
         """Tests if file is updated when the 'save' is called"""
         b_model = BaseModel()
         b_model.save()
