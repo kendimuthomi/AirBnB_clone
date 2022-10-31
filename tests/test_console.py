@@ -552,4 +552,3 @@ class HBNBCommandTestCases(unittest.TestCase):
         added_attribute = all_obs[f"User.{identity}"].flt
         self.assertEqual(added_attribute, 42.42)
         self.assertIsInstance(added_attribute, float)
-
