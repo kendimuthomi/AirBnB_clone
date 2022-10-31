@@ -4,7 +4,7 @@ AirBnB site.
 + models
 
 
-###**base_model**
+###base_model
 
 Lets start with the super-model (pun intended) the BaseModel that contains the methods and the preliminary attributes to the subsequent classes which will inherit from it
 Funcs:
@@ -26,7 +26,7 @@ just detailing extra attributes it has to distinguish each from the other.
 + models.engine
 
 
-###**file_storage**
+###file_storage
 
 This here class deals with serialization and deserialization of previously created instances
 Functions:
