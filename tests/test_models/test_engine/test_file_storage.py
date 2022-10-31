@@ -10,6 +10,10 @@ import json
 class FileStorageTestCase(unittest.TestCase):
     """Defiinition of the class for the unittests"""
 
+    def test_file_path_is_a_private_class_attr(self):
+        """Checks that file_path is a private class attribute"""
+        self.assertFalse(hasattr(FileStorage(), "__file_path"))
+
     def test_All(self):
         """
         Testing the method all() from FileStorage
@@ -55,7 +59,7 @@ class FileStorageTestCase(unittest.TestCase):
 
         objects_values = []
         for obj in all_dicts.values():
-            for values in obj.values():
+            for values in obj.to_dict().values():
                 objects_values.append(values)
 
         self.assertIn(model.id, objects_values)

@@ -31,6 +31,14 @@ class BaseModelTestCase(unittest.TestCase):
         self.assertIsInstance(my_model.updated_at, datetime.datetime)
         self.assertIsNot(my_model.updated_at, initial_datetime)
 
+        def test_save_update_file(self):
+        """Tests if file is updated when the 'save' is called"""
+        b_model = BaseModel()
+        b_model.save()
+        bid = "BaseModel.{}".format(b_model.id)
+        with open("file.json", encoding="utf-8") as f:
+            self.assertIn(bid, f.read())
+
     def testToDict(self):
         """Tests the to_dict() method"""
 
