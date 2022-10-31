@@ -94,7 +94,7 @@ The count() method meanwhile is supposed to print the number of instances from a
 
 Prints out the number of instances that the model User has stored. Is handy when it comes to checking if a particular instance has been destroyed (I'll leave you to figure that out dummy).
 
-+ update()
+#### update()
 The update() method should get special attention first it has two ways in which you can use it to update or add attributes to an instance.
 
 1. `<class name>.update(<id>, <attribute name>, <attribute value>)`
