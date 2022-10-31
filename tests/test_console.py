@@ -297,17 +297,17 @@ class HBNBCommandTestCases(unittest.TestCase):
             identity = f.getvalue()[:-1]
 
         all_obs = storage.all()
-        HBNBCommand().onecmd(f'update User {identity} "key" "value"')
+        HBNBCommand().onecmd(f'update User {identity} key "value"')
         added_attribute = all_obs[f"User.{identity}"].key
         self.assertEqual(added_attribute, "value")
         self.assertIsInstance(added_attribute, str)
 
-        HBNBCommand().onecmd(f'update User {identity} "num" 42')
+        HBNBCommand().onecmd(f'update User {identity} num 42')
         added_attribute = all_obs[f"User.{identity}"].num
         self.assertEqual(added_attribute, 42)
         self.assertIsInstance(added_attribute, int)
 
-        HBNBCommand().onecmd(f'update User {identity} "flt" 42.42')
+        HBNBCommand().onecmd(f'update User {identity} flt 42.42')
         added_attribute = all_obs[f"User.{identity}"].flt
         self.assertEqual(added_attribute, 42.42)
         self.assertIsInstance(added_attribute, float)
@@ -503,7 +503,7 @@ class HBNBCommandTestCases(unittest.TestCase):
         changed_num = all_obs[f"User.{identity}"].number
         self.assertEqual(changed_num, 2)
 
-    def test_update_add_attributes(self):
+    def test_dot_update_add_attributes(self):
         """
         Test whether do_update() can add attributes to an instance
         and whether they retain their type
@@ -527,3 +527,29 @@ class HBNBCommandTestCases(unittest.TestCase):
         added_attribute = all_obs[f"User.{identity}"].flt
         self.assertEqual(added_attribute, 42.42)
         self.assertIsInstance(added_attribute, float)
+
+    def test_dot_update_dictionaries(self):
+        """
+        Testing whether the update() can be able to update
+        using a dictionary. Format:
+        <class name>.update(<id>, <dictionary representation>)
+        """
+        with patch("sys.stdout", new=StringIO()) as f:
+            HBNBCommand().onecmd("create User")
+            identity = f.getvalue()[:-1]
+
+        all_obs = storage.all()
+        dictionary = {"key": "value", "num": 42, "flt": 42.42}
+        HBNBCommand().onecmd(f'User.update("{identity}", {dictionary})')
+        added_attribute = all_obs[f"User.{identity}"].key
+        self.assertEqual(added_attribute, "value")
+        self.assertIsInstance(added_attribute, str)
+
+        added_attribute = all_obs[f"User.{identity}"].num
+        self.assertEqual(added_attribute, 42)
+        self.assertIsInstance(added_attribute, int)
+
+        added_attribute = all_obs[f"User.{identity}"].flt
+        self.assertEqual(added_attribute, 42.42)
+        self.assertIsInstance(added_attribute, float)
+
