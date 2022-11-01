@@ -6,7 +6,7 @@ from models.base_model import BaseModel
 class State(BaseModel):
     """
     Representation of the
-    class State
+    subclass State
 
     Attribute:
     name: name of the state
