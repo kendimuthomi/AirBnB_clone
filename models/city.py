@@ -6,7 +6,7 @@ from models.base_model import BaseModel
 class City(BaseModel):
     """
     Representation of the
-    class City
+    subclass City
 
     Attribute:
     name: name of the city
