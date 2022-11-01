@@ -6,7 +6,7 @@ from models.base_model import BaseModel
 class Review(BaseModel):
     """
     Representation of the
-    class Review
+    subclass Review
 
     Attribute:
     text: review text
