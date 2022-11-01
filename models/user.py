@@ -8,7 +8,7 @@ that iherits from BaseModel
 
 class User(BaseModel):
     """
-    Representation of a user.
+    Representation of a user subclass.
 
     Attributes:
     email(str): the users's email
