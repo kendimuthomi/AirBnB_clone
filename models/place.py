@@ -6,7 +6,7 @@ from models.base_model import BaseModel
 class Place(BaseModel):
     """
     Representation of the
-    class Place
+    subclass Place
 
     Attribute:
     name: name of the place
