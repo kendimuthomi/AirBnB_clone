@@ -7,6 +7,6 @@
 
 file.json
 
-#ignore the script for pushing
+#ignore in-built script for pushing
 
 git_push
