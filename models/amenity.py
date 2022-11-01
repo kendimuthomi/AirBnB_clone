@@ -6,7 +6,7 @@ from models.base_model import BaseModel
 class Amenity(BaseModel):
     """
     Representation of the
-    class Amenity subclass
+    subclass Amenity
 
     Attribute:
     name: name of the amenity
